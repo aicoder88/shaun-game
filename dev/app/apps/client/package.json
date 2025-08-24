@@ -19,7 +19,8 @@
     "zustand": "^4.4.7",
     "lucide-react": "^0.263.1",
     "clsx": "^2.0.0",
-    "tailwind-merge": "^2.2.1"
+    "tailwind-merge": "^2.2.1",
+    "@murder-express/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20",

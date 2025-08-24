@@ -1,18 +1,6 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "apps/client/next.config.js",
-      "use": "@vercel/next",
-      "config": {
-        "distDir": ".next"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "apps/client/$1"
-    }
-  ]
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next", 
+  "installCommand": "npm install",
+  "rootDirectory": "apps/client"
 }
