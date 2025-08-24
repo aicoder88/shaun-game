@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import { GameManager } from '../GameManager'
-import caseData from '@murder-express/shared/src/data/case_01.json'
+import caseData from '../../data/case_01.json'
 
 export class CarriageScene extends Phaser.Scene {
   private gameManager: GameManager | null = null

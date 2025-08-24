@@ -53,7 +53,7 @@ export default function MenuPage() {
           <div className="bg-black/50 p-8 rounded-xl border border-steampunk-copper/30">
             <h3 className="text-2xl font-bold text-white mb-4">🕵️ Join as Detective</h3>
             <p className="text-gray-300 mb-6">
-              Enter your teacher's room code to join the investigation
+              Enter your teacher&apos;s room code to join the investigation
             </p>
             
             <div className="flex gap-4 max-w-md mx-auto">

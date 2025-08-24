@@ -8,7 +8,7 @@ import { PhaserGame } from '@/components/PhaserGame'
 import { TeacherControls } from '@/components/TeacherControls'
 import { JournalPanel } from '@/components/JournalPanel'
 import { ChatPanel } from '@/components/ChatPanel'
-import caseData from '@murder-express/shared/src/data/case_01.json'
+import caseData from '../../data/case_01.json'
 
 export default function ConductorPage() {
   const searchParams = useSearchParams()
@@ -207,7 +207,7 @@ export default function ConductorPage() {
       <div className="min-h-screen bg-gradient-to-b from-purple-900 to-black p-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold text-white mb-8 text-center">
-            Conductor Whibury's Control Room
+            Conductor Whibury&apos;s Control Room
           </h1>
           
           <div className="bg-black/50 p-8 rounded-lg text-center">

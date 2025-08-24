@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import caseData from '@murder-express/shared/src/data/case_01.json'
+import caseData from '../../data/case_01.json'
 
 export class DebriefScene extends Phaser.Scene {
   private accusedSuspect: any = null

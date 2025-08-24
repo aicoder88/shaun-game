@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { supabase } from '@/lib/supabase'
-import type { Room, GameState, JournalEntry, ChatMessage } from '@murder-express/shared'
+import type { Room, GameState, JournalEntry, ChatMessage } from '../types/game'
 
 interface GameStore {
   // Room state

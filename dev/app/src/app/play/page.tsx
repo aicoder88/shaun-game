@@ -169,7 +169,7 @@ export default function PlayPage() {
         <div className="max-w-md mx-auto bg-black/50 p-8 rounded-lg text-center">
           <h1 className="text-2xl font-bold text-white mb-4">Room Not Found</h1>
           <p className="text-gray-300 mb-6">
-            The room code you entered doesn't exist or has expired.
+            The room code you entered doesn&apos;t exist or has expired.
           </p>
           <button
             onClick={() => window.location.href = '/menu'}

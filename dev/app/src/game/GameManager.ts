@@ -7,7 +7,7 @@ import { MiniLetterScene } from './scenes/MiniLetterScene'
 import { MiniGapFillScene } from './scenes/MiniGapFillScene'
 import { AccuseScene } from './scenes/AccuseScene'
 import { DebriefScene } from './scenes/DebriefScene'
-import type { Room, GameState } from '@murder-express/shared'
+import type { Room, GameState } from '../types/game'
 
 export class GameManager {
   private roomId: string
