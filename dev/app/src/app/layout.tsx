@@ -10,8 +10,6 @@ export const metadata: Metadata = {
   title: 'Murder on the Bullet Express - ESL Detective Game',
   description: 'Educational detective game for English language learners',
   manifest: '/manifest.json',
-  themeColor: '#581c87',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
@@ -25,6 +23,14 @@ export const metadata: Metadata = {
     'apple-mobile-web-app-status-bar-style': 'black-translucent',
     'apple-mobile-web-app-title': 'Bullet Express'
   }
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#581c87'
 }
 
 export default function RootLayout({

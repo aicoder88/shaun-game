@@ -18,6 +18,9 @@ export function usePWA() {
   const [isInstalled, setIsInstalled] = useState(false)
 
   useEffect(() => {
+    // Only run on client-side
+    if (typeof window === 'undefined') return
+
     // Register service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
@@ -83,6 +86,7 @@ export function usePWA() {
   }
 
   const isStandalone = () => {
+    if (typeof window === 'undefined') return false
     return window.matchMedia('(display-mode: standalone)').matches ||
            (window.navigator as any).standalone ||
            document.referrer.includes('android-app://')

@@ -1,0 +1,100 @@
+/* Simple Steampunk Theme */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  background: linear-gradient(135deg, #c04000 0%, #8b4513 100%);
+  color: #f5f5dc;
+  min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3 {
+  font-family: 'Cinzel', serif;
+  color: #b8860b;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+/* Main App Layout */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.game-header {
+  background: linear-gradient(90deg, #2c2c2c, #708090);
+  border-bottom: 3px solid #b8860b;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-section h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.title-section p {
+  margin: 5px 0 0 0;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+/* Navigation */
+.game-navigation {
+  display: flex;
+  gap: 15px;
+}
+
+.steampunk-btn {
+  background: linear-gradient(145deg, #b8860b 0%, #cd7f32 100%);
+  border: 3px solid #cd7f32;
+  border-radius: 8px;
+  color: #2c2c2c;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.steampunk-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.5);
+}
+
+.steampunk-btn.active {
+  background: linear-gradient(145deg, #b8860b, #cd7f32);
+  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Content */
+.game-content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Footer */
+.game-footer {
+  background: #2c2c2c;
+  border-top: 2px solid #cd7f32;
+  padding: 20px;
+  text-align: center;
+}
+
+.educational-info p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+}

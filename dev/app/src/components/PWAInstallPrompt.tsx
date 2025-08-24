@@ -22,7 +22,9 @@ export function PWAInstallPrompt() {
   const handleDismiss = () => {
     setDismissed(true)
     // Store dismissal in localStorage to avoid showing again soon
-    localStorage.setItem('pwa-dismissed', Date.now().toString())
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('pwa-dismissed', Date.now().toString())
+    }
   }
 
   return (

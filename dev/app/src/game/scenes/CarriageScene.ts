@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import * as Phaser from 'phaser'
 import { GameManager } from '../GameManager'
 import caseData from '../../data/case_01.json'
 

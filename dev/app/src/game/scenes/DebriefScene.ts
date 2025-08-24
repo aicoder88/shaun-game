@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import * as Phaser from 'phaser'
 import caseData from '../../data/case_01.json'
 
 export class DebriefScene extends Phaser.Scene {

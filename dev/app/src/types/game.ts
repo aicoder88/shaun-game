@@ -10,12 +10,49 @@ export interface GameState {
 export interface Room {
   id: string
   code: string
-  teacherId?: string
-  studentId?: string
-  killerId?: string
-  gameState: GameState
-  createdAt: string
-  updatedAt: string
+  scene: string
+  teacher_id: string | null
+  student_id: string | null
+  killer_id: string | null
+  lens_charges: number
+  inventory: Record<string, any>
+  hotspots: Record<string, any>
+  suspects: Record<string, any>
+  locked: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface RoomInsert {
+  id?: string
+  code: string
+  scene?: string
+  teacher_id?: string | null
+  student_id?: string | null
+  killer_id?: string | null
+  lens_charges?: number
+  inventory?: Record<string, any>
+  hotspots?: Record<string, any>
+  suspects?: Record<string, any>
+  locked?: boolean
+  created_at?: string
+  updated_at?: string
+}
+
+export interface RoomUpdate {
+  id?: string
+  code?: string
+  scene?: string
+  teacher_id?: string | null
+  student_id?: string | null
+  killer_id?: string | null
+  lens_charges?: number
+  inventory?: Record<string, any>
+  hotspots?: Record<string, any>
+  suspects?: Record<string, any>
+  locked?: boolean
+  created_at?: string
+  updated_at?: string
 }
 
 export interface InventoryItem {
@@ -87,14 +124,16 @@ export interface MiniGame {
 
 export interface JournalEntry {
   id: string
+  room_id: string
   actor: string
   text: string
-  timestamp: string
+  created_at: string
 }
 
 export interface ChatMessage {
   id: string
+  room_id: string
   sender: string
   message: string
-  timestamp: string
+  created_at: string
 }
