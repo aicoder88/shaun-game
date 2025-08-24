@@ -40,9 +40,10 @@ export default function ConductorPage() {
 
       if (error || !data) throw error || new Error('Room not found')
 
-      setRoom(data)
+      const roomData = data as any
+      setRoom(roomData)
       setLoading(false)
-      setupRealtimeSubscriptions(data.id)
+      setupRealtimeSubscriptions(roomData.id)
     } catch (error) {
       console.error('Error joining room:', error)
       setLoading(false)
@@ -67,7 +68,7 @@ export default function ConductorPage() {
         teacherId = authData.user?.id
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('rooms')
         .insert({
           code,
@@ -163,7 +164,7 @@ export default function ConductorPage() {
   const updateRoom = async (updates: any) => {
     if (!room) return
 
-    const { error } = await supabase
+    const { error } = await (supabase as any)
       .from('rooms')
       .update(updates)
       .eq('id', room.id)
@@ -176,7 +177,7 @@ export default function ConductorPage() {
   const sendBroadcast = async (message: string) => {
     if (!room) return
 
-    await supabase
+    await (supabase as any)
       .from('chat')
       .insert({
         room_id: room.id,

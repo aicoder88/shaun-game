@@ -37,7 +37,7 @@ export function ChatPanel({ messages, roomId, userType }: ChatPanelProps) {
     try {
       const sender = userType === 'teacher' ? 'Conductor Whibury' : 'Detective'
       
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('chat')
         .insert({
           room_id: roomId,

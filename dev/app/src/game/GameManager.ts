@@ -21,7 +21,7 @@ export class GameManager {
     this.setupRealtimeSubscription()
   }
 
-  getScenes(): Phaser.Types.Scenes.CreateSceneFromObjectConfig[] {
+  getScenes(): any[] {
     return [
       { key: 'Boot', scene: BootScene },
       { key: 'Menu', scene: MenuScene },
@@ -41,14 +41,15 @@ export class GameManager {
       .single()
 
     if (data) {
-      this.room = data as any
+      const roomData = data as any
+      this.room = roomData
       this.gameState = {
-        scene: data.scene || 'menu',
-        inventory: data.inventory?.items || [],
-        suspects: data.suspects?.list || [],
-        clues: data.suspects?.clues || [],
-        lensCharges: data.lens_charges || 3,
-        locked: data.locked || false
+        scene: roomData.scene || 'menu',
+        inventory: roomData.inventory?.items || [],
+        suspects: roomData.suspects?.list || [],
+        clues: roomData.suspects?.clues || [],
+        lensCharges: roomData.lens_charges || 3,
+        locked: roomData.locked || false
       }
     }
 
@@ -90,7 +91,7 @@ export class GameManager {
   async updateRoom(updates: Partial<any>) {
     if (!this.room) return
 
-    const { error } = await supabase
+    const { error } = await (supabase as any)
       .from('rooms')
       .update(updates)
       .eq('id', this.roomId)
@@ -101,7 +102,7 @@ export class GameManager {
   }
 
   async addJournalEntry(actor: string, text: string) {
-    const { error } = await supabase
+    const { error } = await (supabase as any)
       .from('journal_entries')
       .insert({
         room_id: this.roomId,
@@ -115,7 +116,7 @@ export class GameManager {
   }
 
   async sendChat(sender: string, message: string) {
-    const { error } = await supabase
+    const { error } = await (supabase as any)
       .from('chat')
       .insert({
         room_id: this.roomId,

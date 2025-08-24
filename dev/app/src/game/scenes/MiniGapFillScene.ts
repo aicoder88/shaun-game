@@ -282,7 +282,7 @@ export class MiniGapFillScene extends Phaser.Scene {
     const popup = this.add.container(512, 300)
     
     const bg = this.add.rectangle(0, 0, 500, 200, 0x000000, 0.95)
-      .setStrokeStyle(3, color)
+      .setStrokeStyle(3, parseInt(color.replace('#', ''), 16))
     
     const resultText = this.add.text(0, -40, message, {
       fontSize: '20px',

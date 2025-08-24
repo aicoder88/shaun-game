@@ -69,7 +69,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // API actions
   updateRoom: async (roomId, updates) => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('rooms')
         .update(updates)
         .eq('id', roomId)
@@ -83,7 +83,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   sendChatMessage: async (roomId, sender, message) => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('chat')
         .insert({
           room_id: roomId,
@@ -100,7 +100,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addJournalEntryToDb: async (roomId, actor, text) => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('journal_entries')
         .insert({
           room_id: roomId,

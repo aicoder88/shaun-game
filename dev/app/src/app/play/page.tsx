@@ -53,20 +53,21 @@ export default function PlayPage() {
 
       if (roomError) throw new Error('Room not found. Please check the room code.')
 
+      const roomDataTyped = roomData as any
       // Update room with student ID if not already set
-      if (!roomData.student_id) {
-        const { error: updateError } = await supabase
+      if (!roomDataTyped.student_id) {
+        const { error: updateError } = await (supabase as any)
           .from('rooms')
           .update({ student_id: studentId })
-          .eq('id', roomData.id)
+          .eq('id', roomDataTyped.id)
 
         if (updateError) throw updateError
-        roomData.student_id = studentId
+        roomDataTyped.student_id = studentId
       }
 
-      setRoom(roomData)
-      setInventory(roomData.inventory?.items || [])
-      setupRealtimeSubscriptions(roomData.id)
+      setRoom(roomDataTyped)
+      setInventory(roomDataTyped.inventory?.items || [])
+      setupRealtimeSubscriptions(roomDataTyped.id)
       
     } catch (error: any) {
       console.error('Error joining room:', error)
@@ -83,8 +84,9 @@ export default function PlayPage() {
       .on('postgres_changes', 
         { event: '*', schema: 'public', table: 'rooms', filter: `id=eq.${roomId}` },
         (payload) => {
-          setRoom(payload.new)
-          setInventory(payload.new.inventory?.items || [])
+          const roomUpdate = payload.new as any
+          setRoom(roomUpdate)
+          setInventory(roomUpdate.inventory?.items || [])
         }
       )
       .subscribe()
