@@ -1,0 +1,21 @@
+{
+  "name": "murder-on-the-bullet-express",
+  "version": "1.0.0",
+  "description": "Educational ESL detective game for 12-15 year olds",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "turbo": "^1.13.4"
+  }
+}
