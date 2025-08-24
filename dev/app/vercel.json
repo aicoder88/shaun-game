@@ -1,14 +1,18 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "apps/client/package.json",
-      "use": "@vercel/next"
+      "src": "apps/client/next.config.js",
+      "use": "@vercel/next",
+      "config": {
+        "distDir": ".next"
+      }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/apps/client/$1"
+      "src": "/(.*)",
+      "dest": "apps/client/$1"
     }
   ]
 }
