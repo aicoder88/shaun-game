@@ -31,13 +31,14 @@ export default function ConductorPage() {
 
   const joinExistingRoom = async (code: string) => {
     try {
+      if (!supabase) throw new Error('Database not available')
       const { data, error } = await supabase
         .from('rooms')
         .select('*')
         .eq('code', code)
         .single()
 
-      if (error) throw error
+      if (error || !data) throw error || new Error('Room not found')
 
       setRoom(data)
       setLoading(false)
@@ -51,6 +52,8 @@ export default function ConductorPage() {
   const createNewRoom = async () => {
     setCreating(true)
     try {
+      if (!supabase) throw new Error('Database not available')
+      
       const code = generateRoomCode()
       const killerId = randomChoice(['lestrange', 'gaspard', 'zane'])
       

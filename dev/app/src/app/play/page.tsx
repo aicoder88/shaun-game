@@ -32,6 +32,8 @@ export default function PlayPage() {
 
   const joinRoom = async (code: string) => {
     try {
+      if (!supabase) throw new Error('Database not available')
+      
       // Get or create anonymous user for student
       const { data: { user } } = await supabase.auth.getUser()
       let studentId = user?.id
