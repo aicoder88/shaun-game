@@ -1,0 +1,12 @@
+{
+  "buildCommand": "cd sherlock-esl && npm run build",
+  "outputDirectory": "sherlock-esl/dist",
+  "installCommand": "cd sherlock-esl && npm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
