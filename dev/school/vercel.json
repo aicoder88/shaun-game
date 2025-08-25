@@ -1,18 +1,11 @@
 {
-  "version": 2,
-  "builds": [
+  "buildCommand": "cd sherlock-esl && npm run build",
+  "outputDirectory": "sherlock-esl/dist",
+  "framework": "vite",
+  "rewrites": [
     {
-      "src": "sherlock-esl/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
