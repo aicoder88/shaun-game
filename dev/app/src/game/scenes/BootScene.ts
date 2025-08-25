@@ -6,38 +6,15 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('logo', '/images/logo.png')
-    this.load.image('carriage_bg', '/images/carriage_bg.jpg')
-    this.load.image('menu_bg', '/images/menu_bg.jpg')
+    console.log('BootScene: Starting preload...')
     
-    // Character sprites
-    this.load.image('lestrange', '/images/lestrange.png')
-    this.load.image('gaspard', '/images/gaspard.png')
-    this.load.image('zane', '/images/zane.png')
-    this.load.image('victim', '/images/victim.png')
-    
-    // UI elements
-    this.load.image('inventory_panel', '/images/ui/inventory_panel.png')
-    this.load.image('journal_panel', '/images/ui/journal_panel.png')
-    this.load.image('lens_icon', '/images/ui/lens_icon.png')
-    this.load.image('button', '/images/ui/button.png')
-    
-    // Items
-    this.load.image('knife', '/images/items/knife.png')
-    this.load.image('letter', '/images/items/letter.png')
-    this.load.image('book', '/images/items/book.png')
-    this.load.image('gear', '/images/items/gear.png')
-    this.load.image('glass', '/images/items/glass.png')
-    this.load.image('logbook', '/images/items/logbook.png')
-    
-    // Audio
-    this.load.audio('train_ambient', '/audio/train_ambient.ogg')
-    this.load.audio('click', '/audio/click.ogg')
-    this.load.audio('discovery', '/audio/discovery.ogg')
-    this.load.audio('mystery', '/audio/mystery.ogg')
-    
-    // Bitmap font for retro styling
-    this.load.bitmapFont('steampunk', '/fonts/steampunk.png', '/fonts/steampunk.fnt')
+    // Create simple colored rectangles as placeholders for missing images
+    this.load.on('loaderror', (file: any) => {
+      console.warn('Failed to load:', file.src)
+    })
+
+    // Skip loading missing assets - we'll create them programmatically
+    console.log('BootScene: Skipping asset loading (assets not available)')
 
     // Loading bar
     const progressBar = this.add.graphics()

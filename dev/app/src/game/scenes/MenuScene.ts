@@ -7,12 +7,12 @@ export class MenuScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.cameras.main
+    console.log('MenuScene: Creating menu scene')
 
-    // Background
-    this.add.image(width / 2, height / 2, 'menu_bg').setDisplaySize(width, height)
-    
-    // Dark overlay for better text visibility
-    const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.6)
+    // Background gradient instead of image
+    const graphics = this.add.graphics()
+    graphics.fillGradientStyle(0x1a1a2e, 0x16213e, 0x0f0f23, 0x0c0c1d)
+    graphics.fillRect(0, 0, width, height)
     
     // Title
     const title = this.add.text(width / 2, 150, 'MURDER ON THE\nBULLET EXPRESS', {
@@ -32,26 +32,20 @@ export class MenuScene extends Phaser.Scene {
       align: 'center'
     }).setOrigin(0.5)
 
-    // Menu buttons will be controlled by the UI overlay
-    // This scene serves as the visual background
-    
-    // Add some atmospheric elements
-    this.createSteamParticles()
-    this.playAmbientSound()
+    // Train emoji as decoration
+    const trainEmoji = this.add.text(width / 2, 300, '🚂', {
+      fontSize: '64px'
+    }).setOrigin(0.5)
+
+    // Status text
+    const statusText = this.add.text(width / 2, 400, 'Game Engine Loaded Successfully!\nReady to investigate mysteries.', {
+      fontSize: '16px',
+      fontFamily: 'monospace',
+      color: '#a855f7',
+      align: 'center'
+    }).setOrigin(0.5)
+
+    console.log('MenuScene: Scene created successfully')
   }
 
-  private createSteamParticles() {
-    const particles = this.add.particles(100, 500, 'steam', {
-      speed: { min: 10, max: 30 },
-      lifespan: 3000,
-      alpha: { start: 0.3, end: 0 },
-      scale: { start: 0.1, end: 0.3 }
-    })
-  }
-
-  private playAmbientSound() {
-    if (!this.sound.get('train_ambient')) {
-      this.sound.play('train_ambient', { loop: true, volume: 0.3 })
-    }
-  }
 }

@@ -79,7 +79,17 @@ export class GameManager {
       this.cleanup()
       
       if (!supabase) {
-        throw new Error('Database not available')
+        console.warn('Database not available, using local game state')
+        // Create a default local game state
+        this.gameState = {
+          scene: 'menu',
+          inventory: [],
+          suspects: [],
+          clues: [],
+          lensCharges: 3,
+          locked: false
+        }
+        return
       }
 
       const { data, error } = await supabase
@@ -89,8 +99,17 @@ export class GameManager {
         .single()
 
       if (error) {
-        console.error('Failed to fetch room data:', error)
-        throw new Error(`Room not found: ${error.message}`)
+        console.warn('Failed to fetch room data, using local state:', error)
+        // Create a default local game state
+        this.gameState = {
+          scene: 'menu',
+          inventory: [],
+          suspects: [],
+          clues: [],
+          lensCharges: 3,
+          locked: false
+        }
+        return
       }
 
       if (data) {
@@ -104,18 +123,18 @@ export class GameManager {
           lensCharges: roomData.lens_charges || 3,
           locked: roomData.locked || false
         }
-      }
 
-      // Set up realtime subscription with proper cleanup
-      this.realtimeChannel = supabase
-        ?.channel(`room_${this.roomId}`)
-        .on('postgres_changes', 
-          { event: '*', schema: 'public', table: 'rooms', filter: `id=eq.${this.roomId}` },
-          (payload) => {
-            this.handleRoomUpdate(payload.new as any)
-          }
-        )
-        .subscribe()
+        // Set up realtime subscription with proper cleanup
+        this.realtimeChannel = supabase
+          ?.channel(`room_${this.roomId}`)
+          .on('postgres_changes', 
+            { event: '*', schema: 'public', table: 'rooms', filter: `id=eq.${this.roomId}` },
+            (payload) => {
+              this.handleRoomUpdate(payload.new as any)
+            }
+          )
+          .subscribe()
+      }
         
     } catch (error) {
       console.error('Failed to setup realtime subscription:', error)

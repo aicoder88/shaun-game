@@ -2,11 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'SteampunkPixel';
-  src: url('/fonts/steampunk-pixel.woff2') format('woff2');
-  font-display: swap;
-}
+/* Removed missing font to prevent loading issues */
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -30,7 +26,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-  font-family: 'SteampunkPixel', monospace;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 .game-container {

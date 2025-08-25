@@ -17,12 +17,15 @@ export function PhaserGame({ roomId, isTeacher, onGameReady }: PhaserGameProps) 
   const gameManagerRef = useRef<GameManager | null>(null)
 
   useEffect(() => {
+    console.log('PhaserGame: Initializing with roomId:', roomId, 'isTeacher:', isTeacher)
     if (!containerRef.current || gameRef.current) return
 
     try {
+      console.log('PhaserGame: Creating GameManager...')
       const gameManager = new GameManager(roomId, isTeacher)
       gameManagerRef.current = gameManager
 
+      console.log('PhaserGame: Creating Phaser config...')
       const config: Phaser.Types.Core.GameConfig = {
         type: Phaser.AUTO,
         width: 1024,
@@ -53,6 +56,7 @@ export function PhaserGame({ roomId, isTeacher, onGameReady }: PhaserGameProps) 
         }
       }
 
+      console.log('PhaserGame: Starting Phaser game...')
       gameRef.current = new Phaser.Game(config)
 
       // Provide game instance to GameManager (removes global dependency)
@@ -61,6 +65,8 @@ export function PhaserGame({ roomId, isTeacher, onGameReady }: PhaserGameProps) 
       if (onGameReady) {
         onGameReady(gameManager)
       }
+      
+      console.log('PhaserGame: Game initialized successfully!')
     } catch (error) {
       console.error('Failed to initialize Phaser game:', error)
       throw error

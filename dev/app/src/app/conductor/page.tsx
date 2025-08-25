@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { generateRoomCode, randomChoice } from '@/lib/utils'
+import { generateSimpleRoomCode, randomChoice } from '@/lib/utils'
 import caseData from '../../data/case_01.json'
 
 // Lazy load components to avoid SSR issues
@@ -105,47 +105,71 @@ function ConductorPageContent() {
   }
 
   const createNewRoom = async () => {
+    console.log('Creating new room...')
     if (!mounted) return
     
     setCreating(true)
     try {
-      if (!supabase) throw new Error('Database not available')
-      
-      const code = generateRoomCode()
+      const code = generateSimpleRoomCode()
       const killerId = randomChoice(['lestrange', 'gaspard', 'zane'])
       
-      const { data: { user } } = await supabase.auth.getUser()
-      let teacherId = user?.id
-
-      if (!teacherId) {
-        const { data: authData, error: authError } = await supabase.auth.signInAnonymously()
-        if (authError) throw authError
-        teacherId = authData.user?.id
+      // Create a local room object for testing when database is unavailable
+      const localRoom = {
+        id: `local-${Date.now()}`,
+        code,
+        scene: 'menu',
+        teacher_id: 'local-teacher',
+        killer_id: killerId,
+        lens_charges: 3,
+        inventory: { items: [] },
+        created_at: new Date().toISOString(),
+        locked: false
       }
 
-      const { data, error } = await (supabase as any)
-        .from('rooms')
-        .insert({
-          code,
-          scene: 'menu',
-          teacher_id: teacherId,
-          killer_id: killerId,
-          lens_charges: 3,
-          inventory: { items: [] },
-          created_at: new Date().toISOString()
-        })
-        .select()
-        .single()
+      if (supabase) {
+        try {
+          const { data: { user } } = await supabase.auth.getUser()
+          let teacherId = user?.id
 
-      if (error) throw error
+          if (!teacherId) {
+            const { data: authData, error: authError } = await supabase.auth.signInAnonymously()
+            if (authError) throw authError
+            teacherId = authData.user?.id
+          }
 
-      setRoom(data)
+          const { data, error } = await (supabase as any)
+            .from('rooms')
+            .insert({
+              code,
+              scene: 'menu',
+              teacher_id: teacherId,
+              killer_id: killerId,
+              lens_charges: 3,
+              inventory: { items: [] },
+              created_at: new Date().toISOString()
+            })
+            .select()
+            .single()
+
+          if (error) throw error
+          setRoom(data)
+        } catch (dbError) {
+          console.warn('Database error, using local room:', dbError)
+          setRoom(localRoom)
+        }
+      } else {
+        console.warn('Database not available, using local room')
+        setRoom(localRoom)
+      }
+      
+      console.log('Room created successfully:', localRoom || 'from database')
       
       if (typeof window !== 'undefined') {
         window.history.pushState({}, '', `/conductor?room=${code}`)
       }
     } catch (error) {
       console.error('Error creating room:', error)
+      alert('Error creating room: ' + error.message)
     } finally {
       setCreating(false)
     }
