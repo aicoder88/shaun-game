@@ -1,11 +1,18 @@
 {
-  "buildCommand": "cd sherlock-esl && npm run build",
-  "outputDirectory": "sherlock-esl/dist",
-  "installCommand": "cd sherlock-esl && npm install",
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "sherlock-esl/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
