@@ -117,7 +117,7 @@ export interface Hotspot {
 
 export interface MiniGame {
   id: string
-  type: 'letter-reconstruction' | 'gap-fill'
+  type: 'letter-reconstruction' | 'gap-fill' | 'confession-patchwork'
   difficulty: number
   data: any
 }
@@ -136,4 +136,89 @@ export interface ChatMessage {
   sender: string
   message: string
   created_at: string
+}
+
+export interface GrammarMistake {
+  id: string
+  timestamp: string
+  suspect: string
+  incorrectText: string
+  correctForm: string
+  grammarRule: string
+  error: string
+}
+
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
+
+export interface DifficultySettings {
+  level: DifficultyLevel
+  autoAdjust: boolean
+  vocabularyMaxDifficulty: number
+  grammarComplexity: number
+  hintsEnabled: boolean
+  hintDelay: number
+  clueHighlighting: boolean
+}
+
+export interface Achievement {
+  id: string
+  title: string
+  description: string
+  icon: string
+  category: 'grammar' | 'vocabulary' | 'investigation' | 'engagement' | 'milestone'
+  requirement: {
+    type: 'grammar_accuracy' | 'vocabulary_count' | 'clues_found' | 'dialogues_completed' | 'minigame_score' | 'case_progress' | 'perfect_grammar' | 'chat_messages'
+    threshold: number
+  }
+  earnedAt?: string
+  rarity: 'common' | 'rare' | 'epic' | 'legendary'
+}
+
+export interface ProgressCheckpoint {
+  id: string
+  name: string
+  description: string
+  progress: number
+  completed: boolean
+  completedAt?: string
+  rewards?: {
+    achievements?: string[]
+    lensCharges?: number
+    message?: string
+  }
+}
+
+export interface StudentAnalytics {
+  // Session info
+  sessionStartTime: string
+  sessionDuration: number
+  currentScene: string
+
+  // Grammar performance
+  grammarMistakes: GrammarMistake[]
+  grammarAccuracy: number
+  totalGrammarAttempts: number
+  correctGrammarAttempts: number
+
+  // Vocabulary progress
+  discoveredWords: string[]
+  vocabularyProgress: number
+  totalVocabularyWords: number
+
+  // Investigation metrics
+  cluesDiscovered: number
+  totalClues: number
+  lensChargesUsed: number
+  dialoguesCompleted: string[]
+  minigamesCompleted: string[]
+  minigameScores: Record<string, number>
+
+  // Engagement metrics
+  journalEntries: number
+  chatMessages: number
+  suspectInteractions: number
+
+  // Progress
+  caseProgress: number
+  estimatedCompletionTime: number
 }

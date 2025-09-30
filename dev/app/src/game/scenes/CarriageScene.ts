@@ -161,7 +161,11 @@ export class CarriageScene extends Phaser.Scene {
   private startDialogue(suspectId: string) {
     const suspect = caseData.suspects.find(s => s.id === suspectId)
     if (suspect) {
+      // Emit to Phaser event system
       this.events.emit('dialogue-start', suspect)
+
+      // Emit custom event for React to listen to
+      window.dispatchEvent(new CustomEvent('dialogue-start', { detail: suspect }))
     }
   }
 
@@ -172,6 +176,8 @@ export class CarriageScene extends Phaser.Scene {
         this.scene.start('MiniLetter', { minigame })
       } else if (minigame.type === 'gap-fill') {
         this.scene.start('MiniGapFill', { minigame })
+      } else if (minigame.type === 'confession-patchwork') {
+        this.scene.start('MiniConfession', { minigame })
       }
     }
   }

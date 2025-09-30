@@ -87,11 +87,11 @@ export interface CaseDialogueResponse {
 
 export interface CaseMiniGame {
   id: string
-  type: 'letter-reconstruction' | 'gap-fill'
+  type: 'letter-reconstruction' | 'gap-fill' | 'confession-patchwork'
   name: string
   description: string
   difficulty: number
-  data: LetterReconstructionData | GapFillData
+  data: LetterReconstructionData | GapFillData | ConfessionPatchworkData
 }
 
 export interface LetterReconstructionData {
@@ -123,6 +123,30 @@ export interface Gap {
   correctAnswer: string
   options: string[]
   grammarPoint: string
+}
+
+export interface ConfessionPatchworkData {
+  confessionText: string
+  segments: ConfessionSegment[]
+  fragments: ConfessionFragment[]
+  vocabularyFocus?: string[]
+  rewardClueId?: string
+}
+
+export interface ConfessionSegment {
+  id: string
+  label: string
+  prompt: string
+  grammarHint: string
+  order: number
+}
+
+export interface ConfessionFragment {
+  id: string
+  text: string
+  correctSegmentId: string
+  hint: string
+  isDecoy?: boolean
 }
 
 export interface ESLFocus {

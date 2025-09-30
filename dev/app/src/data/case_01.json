@@ -35,16 +35,44 @@
                   "grammarCorrect": true
                 },
                 {
-                  "id": "ask_alibi", 
+                  "id": "ask_alibi",
                   "text": "Where was you when the murder happened?",
                   "nextNodeId": "grammar_correction",
-                  "grammarCorrect": false
+                  "grammarCorrect": false,
+                  "grammarFeedback": {
+                    "error": "Subject-verb agreement error",
+                    "explanation": "Use 'were' with 'you', not 'was'. The correct form is 'Where were you...?'",
+                    "correctForm": "Where were you when the murder happened?",
+                    "hint": "Remember: I was, you were, he/she/it was, we/they were",
+                    "grammarRule": "Past tense of 'be' requires 'were' with the subject 'you'"
+                  }
                 }
               ]
             },
             {
+              "id": "grammar_correction",
+              "speaker": "System",
+              "text": "Let's try that again with correct grammar.",
+              "isGrammarFeedback": true,
+              "responses": [
+                {
+                  "id": "retry_alibi",
+                  "text": "Where were you when the murder happened?",
+                  "nextNodeId": "alibi_response",
+                  "grammarCorrect": true
+                }
+              ]
+            },
+            {
+              "id": "alibi_response",
+              "speaker": "Professor LeStrange",
+              "text": "I was in the library car, reading ancient texts until 11 PM. You can ask the conductor if you don't believe me.",
+              "grammarFocus": "Past continuous tense",
+              "reveals": "clue_ancient_book"
+            },
+            {
               "id": "reading_response",
-              "speaker": "Professor LeStrange", 
+              "speaker": "Professor LeStrange",
               "text": "Ancient Egyptian texts. Fascinating stuff about burial customs. I had been studying them for hours.",
               "grammarFocus": "Past perfect continuous",
               "reveals": "clue_ancient_book"
@@ -183,6 +211,15 @@
       "requiredItems": ["lockpick"],
       "revealsInfo": "Records of the fatal airship crash and cover-up",
       "eslGrammarPoint": "Past perfect for sequences of events"
+    },
+    {
+      "id": "confession_patchwork",
+      "name": "Assembled Confession",
+      "description": "A complete confession arranged from scattered statements.",
+      "location": "confession_board",
+      "difficulty": 3,
+      "revealsInfo": "Captain Zane admits to sabotaging the brakes after being blackmailed.",
+      "eslGrammarPoint": "Sequencing events with past tenses"
     }
   ],
   "scenes": [
@@ -235,18 +272,29 @@
           "interactionType": "dialogue",
           "targetId": "lestrange"
         },
-        {
-          "id": "kitchen_door",
-          "name": "Kitchen Door",
-          "x": 500,
-          "y": 250,
-          "width": 60,
-          "height": 120,
-          "description": "The door leading to the kitchen car.",
-          "interactionType": "examine"
-        }
-      ]
+    {
+      "id": "kitchen_door",
+      "name": "Kitchen Door",
+      "x": 500,
+      "y": 250,
+      "width": 60,
+      "height": 120,
+      "description": "The door leading to the kitchen car.",
+      "interactionType": "examine"
+    },
+    {
+      "id": "confession_board",
+      "name": "Confession Board",
+      "x": 620,
+      "y": 180,
+      "width": 120,
+      "height": 140,
+      "description": "Magnetic speech tiles hint at a hidden confession waiting to be arranged.",
+      "interactionType": "minigame",
+      "targetId": "confession_patchwork"
     }
+  ]
+}
   ],
   "minigames": [
     {
@@ -265,6 +313,32 @@
           {"id": "piece5", "text": "10,000 pounds or", "x": 150, "y": 300, "rotation": -30, "width": 150, "height": 30}
         ],
         "solution": "Dear Captain Zane, I know about the Aurora incident. Pay me 10,000 pounds or I will tell everyone about your mistake that killed innocent people. You have until we reach London. - Anonymous"
+      }
+    },
+    {
+      "id": "confession_patchwork",
+      "type": "confession-patchwork",
+      "name": "Confession Patchwork",
+      "description": "Arrange confession fragments on the timeline to reveal what really happened.",
+      "difficulty": 3,
+      "data": {
+        "confessionText": "Okay, you caught me... I was alone in the dining car just before midnight. When he threatened to expose the Aurora cover-up, my hands started shaking. I had loosened the brake bolts earlier that evening so the crash would look mechanical. I never wanted anyone to die; I'm ready to face the consequences now.",
+        "segments": [
+          {"id": "scene", "label": "Set the Scene", "prompt": "Where and when was the suspect?", "grammarHint": "Use past continuous to establish the background action.", "order": 1},
+          {"id": "pressure", "label": "Rising Pressure", "prompt": "What forced the suspect to act?", "grammarHint": "Highlight the cause using past simple for sudden events.", "order": 2},
+          {"id": "action", "label": "The Act", "prompt": "What did the suspect actually do?", "grammarHint": "Combine past perfect and past simple to describe the plan and action.", "order": 3},
+          {"id": "remorse", "label": "Consequences & Remorse", "prompt": "How do they feel now?", "grammarHint": "Use modal verbs or present forms to express responsibility and remorse.", "order": 4}
+        ],
+        "fragments": [
+          {"id": "fragment_scene_true", "text": "Okay, you caught me... I was alone in the dining car just before midnight.", "correctSegmentId": "scene", "hint": "Anchor the timeline with a past continuous scene-setter."},
+          {"id": "fragment_pressure_true", "text": "When he threatened to expose the Aurora cover-up, my hands started shaking.", "correctSegmentId": "pressure", "hint": "Cause and effect clues usually fit into the rising pressure stage."},
+          {"id": "fragment_action_true", "text": "I had loosened the brake bolts earlier that evening so the crash would look mechanical.", "correctSegmentId": "action", "hint": "Look for past perfect verbs that describe preparation and action."},
+          {"id": "fragment_remorse_true", "text": "I never wanted anyone to die; I'm ready to face the consequences now.", "correctSegmentId": "remorse", "hint": "Remorse often uses modal verbs or present tense reflections."},
+          {"id": "fragment_decoy_blame", "text": "It was the chef who broke the rules, not me.", "correctSegmentId": "pressure", "hint": "This fragment shifts blame and doesn't match the confession you uncovered.", "isDecoy": true},
+          {"id": "fragment_decoy_professor", "text": "Professor LeStrange ordered me to stay quiet about the artifacts.", "correctSegmentId": "action", "hint": "This fragment talks about artifacts, not the sabotage of the train.", "isDecoy": true}
+        ],
+        "vocabularyFocus": ["confession", "timeline", "consequences"],
+        "rewardClueId": "confession_patchwork"
       }
     },
     {
@@ -308,6 +382,128 @@
         ],
         "vocabulary": ["expensive", "complained", "taste", "collapsed"]
       }
+    }
+  ],
+  "vocabulary": [
+    {
+      "word": "commotion",
+      "definition": "A state of noisy confusion or excitement",
+      "example": "I heard the commotion from the dining car.",
+      "partOfSpeech": "noun",
+      "difficulty": 2,
+      "synonyms": ["disturbance", "uproar", "turmoil"]
+    },
+    {
+      "word": "distressing",
+      "definition": "Causing anxiety, sorrow, or pain; upsetting",
+      "example": "The news was most distressing indeed.",
+      "partOfSpeech": "adjective",
+      "difficulty": 2,
+      "synonyms": ["upsetting", "troubling", "worrying"]
+    },
+    {
+      "word": "indeed",
+      "definition": "Used to emphasize a statement or response; in truth",
+      "example": "That is indeed a valuable clue.",
+      "partOfSpeech": "adverb",
+      "difficulty": 1,
+      "synonyms": ["truly", "certainly", "really"]
+    },
+    {
+      "word": "alibi",
+      "definition": "A claim or proof that someone was elsewhere when a crime was committed",
+      "example": "The suspect has a strong alibi for the time of the murder.",
+      "partOfSpeech": "noun",
+      "difficulty": 2,
+      "synonyms": ["excuse", "defense", "explanation"]
+    },
+    {
+      "word": "suspect",
+      "definition": "A person thought to be guilty of a crime",
+      "example": "There are three suspects on the train.",
+      "partOfSpeech": "noun",
+      "difficulty": 1,
+      "synonyms": ["accused", "defendant"]
+    },
+    {
+      "word": "evidence",
+      "definition": "Information or objects that help prove whether something is true",
+      "example": "The bloody knife is important evidence.",
+      "partOfSpeech": "noun",
+      "difficulty": 1,
+      "synonyms": ["proof", "clue", "testimony"]
+    },
+    {
+      "word": "motive",
+      "definition": "A reason for doing something, especially a crime",
+      "example": "What was the killer's motive?",
+      "partOfSpeech": "noun",
+      "difficulty": 2,
+      "synonyms": ["reason", "purpose", "cause"]
+    },
+    {
+      "word": "investigate",
+      "definition": "To examine carefully to discover the truth",
+      "example": "We must investigate this murder thoroughly.",
+      "partOfSpeech": "verb",
+      "difficulty": 1,
+      "synonyms": ["examine", "inspect", "study"]
+    },
+    {
+      "word": "clue",
+      "definition": "A piece of evidence that helps solve a mystery",
+      "example": "I found an important clue in the library.",
+      "partOfSpeech": "noun",
+      "difficulty": 1,
+      "synonyms": ["hint", "evidence", "lead"]
+    },
+    {
+      "word": "antiquities",
+      "definition": "Objects from ancient times, especially valuable artifacts",
+      "example": "The professor deals in rare antiquities.",
+      "partOfSpeech": "noun",
+      "difficulty": 3,
+      "synonyms": ["artifacts", "relics", "treasures"]
+    },
+    {
+      "word": "blackmail",
+      "definition": "The crime of demanding money by threatening to reveal secrets",
+      "example": "The victim was blackmailing several passengers.",
+      "partOfSpeech": "noun",
+      "difficulty": 2,
+      "synonyms": ["extortion", "coercion", "threats"]
+    },
+    {
+      "word": "confession",
+      "definition": "A formal statement admitting guilt or wrongdoing",
+      "example": "The captain made a full confession.",
+      "partOfSpeech": "noun",
+      "difficulty": 2,
+      "synonyms": ["admission", "acknowledgment", "disclosure"]
+    },
+    {
+      "word": "consequences",
+      "definition": "Results or effects of an action, often negative",
+      "example": "You must face the consequences of your actions.",
+      "partOfSpeech": "noun",
+      "difficulty": 2,
+      "synonyms": ["results", "outcomes", "effects"]
+    },
+    {
+      "word": "collapsed",
+      "definition": "Fell down suddenly, often due to illness or weakness",
+      "example": "The victim collapsed after drinking the wine.",
+      "partOfSpeech": "verb",
+      "difficulty": 2,
+      "synonyms": ["fell", "fainted", "crumpled"]
+    },
+    {
+      "word": "scarce",
+      "definition": "Not enough; in short supply",
+      "example": "Good evidence is scarce in this case.",
+      "partOfSpeech": "adjective",
+      "difficulty": 2,
+      "synonyms": ["rare", "limited", "insufficient"]
     }
   ],
   "eslFocus": [

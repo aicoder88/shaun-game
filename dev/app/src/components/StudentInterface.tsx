@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { Eye, Lock, Lightbulb, MessageSquare, Book } from 'lucide-react'
+import VocabularyGlossary from './VocabularyGlossary'
+import { useGameStore } from '@/stores/gameStore'
 
 interface StudentInterfaceProps {
   room: any
@@ -11,6 +13,8 @@ interface StudentInterfaceProps {
 
 export function StudentInterface({ room, lensCharges, isLocked }: StudentInterfaceProps) {
   const [showHint, setShowHint] = useState(false)
+  const [showVocabulary, setShowVocabulary] = useState(false)
+  const discoveredWords = useGameStore((state) => state.discoveredWords)
 
   const getCurrentSceneHint = () => {
     const hints: Record<string, string> = {
@@ -43,14 +47,31 @@ export function StudentInterface({ room, lensCharges, isLocked }: StudentInterfa
           </div>
         </div>
 
-        {/* Help Button */}
-        <button
-          onClick={() => setShowHint(!showHint)}
-          className="bg-black/80 text-white px-3 py-2 rounded-lg hover:bg-black/90 flex items-center"
-        >
-          <Lightbulb className="w-4 h-4 mr-1" />
-          <span className="text-sm">Hint</span>
-        </button>
+        {/* Right Side Buttons */}
+        <div className="flex items-center gap-2">
+          {/* Vocabulary Button */}
+          <button
+            onClick={() => setShowVocabulary(true)}
+            className="bg-black/80 text-white px-3 py-2 rounded-lg hover:bg-black/90 flex items-center relative"
+          >
+            <Book className="w-4 h-4 mr-1" />
+            <span className="text-sm">Vocabulary</span>
+            {discoveredWords.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                {discoveredWords.length}
+              </span>
+            )}
+          </button>
+
+          {/* Help Button */}
+          <button
+            onClick={() => setShowHint(!showHint)}
+            className="bg-black/80 text-white px-3 py-2 rounded-lg hover:bg-black/90 flex items-center"
+          >
+            <Lightbulb className="w-4 h-4 mr-1" />
+            <span className="text-sm">Hint</span>
+          </button>
+        </div>
       </div>
 
       {/* Hint Panel */}
@@ -106,6 +127,14 @@ export function StudentInterface({ room, lensCharges, isLocked }: StudentInterfa
       <div id="scene-notifications" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none">
         {/* This will be populated by game events */}
       </div>
+
+      {/* Vocabulary Glossary Modal */}
+      {showVocabulary && (
+        <VocabularyGlossary
+          discoveredWords={discoveredWords}
+          onClose={() => setShowVocabulary(false)}
+        />
+      )}
     </>
   )
 }

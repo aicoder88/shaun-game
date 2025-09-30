@@ -1,0 +1,259 @@
+{
+  "achievements": [
+    {
+      "id": "first_steps",
+      "title": "First Steps",
+      "description": "Started your first investigation",
+      "icon": "🎯",
+      "category": "milestone",
+      "requirement": {
+        "type": "case_progress",
+        "threshold": 1
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "grammar_novice",
+      "title": "Grammar Novice",
+      "description": "Achieved 50% grammar accuracy",
+      "icon": "📝",
+      "category": "grammar",
+      "requirement": {
+        "type": "grammar_accuracy",
+        "threshold": 50
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "grammar_master",
+      "title": "Grammar Master",
+      "description": "Achieved 90% grammar accuracy",
+      "icon": "✍️",
+      "category": "grammar",
+      "requirement": {
+        "type": "grammar_accuracy",
+        "threshold": 90
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "perfect_grammar",
+      "title": "Perfect English",
+      "description": "Made no grammar mistakes in 5 consecutive responses",
+      "icon": "💯",
+      "category": "grammar",
+      "requirement": {
+        "type": "perfect_grammar",
+        "threshold": 5
+      },
+      "rarity": "legendary"
+    },
+    {
+      "id": "word_collector",
+      "title": "Word Collector",
+      "description": "Discovered 5 new vocabulary words",
+      "icon": "📚",
+      "category": "vocabulary",
+      "requirement": {
+        "type": "vocabulary_count",
+        "threshold": 5
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "vocabulary_expert",
+      "title": "Vocabulary Expert",
+      "description": "Discovered 10 new vocabulary words",
+      "icon": "📖",
+      "category": "vocabulary",
+      "requirement": {
+        "type": "vocabulary_count",
+        "threshold": 10
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "word_master",
+      "title": "Word Master",
+      "description": "Discovered all 15 vocabulary words",
+      "icon": "🎓",
+      "category": "vocabulary",
+      "requirement": {
+        "type": "vocabulary_count",
+        "threshold": 15
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "keen_eye",
+      "title": "Keen Eye",
+      "description": "Found your first clue",
+      "icon": "🔍",
+      "category": "investigation",
+      "requirement": {
+        "type": "clues_found",
+        "threshold": 1
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "detective",
+      "title": "Detective",
+      "description": "Found 5 clues",
+      "icon": "🕵️",
+      "category": "investigation",
+      "requirement": {
+        "type": "clues_found",
+        "threshold": 5
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "master_detective",
+      "title": "Master Detective",
+      "description": "Found all clues in the case",
+      "icon": "🏆",
+      "category": "investigation",
+      "requirement": {
+        "type": "clues_found",
+        "threshold": 10
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "interrogator",
+      "title": "Interrogator",
+      "description": "Completed dialogue with all 3 suspects",
+      "icon": "💬",
+      "category": "engagement",
+      "requirement": {
+        "type": "dialogues_completed",
+        "threshold": 3
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "puzzle_solver",
+      "title": "Puzzle Solver",
+      "description": "Completed a mini-game with 80% or higher",
+      "icon": "🧩",
+      "category": "engagement",
+      "requirement": {
+        "type": "minigame_score",
+        "threshold": 80
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "puzzle_master",
+      "title": "Puzzle Master",
+      "description": "Completed a mini-game with 100%",
+      "icon": "⭐",
+      "category": "engagement",
+      "requirement": {
+        "type": "minigame_score",
+        "threshold": 100
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "team_player",
+      "title": "Team Player",
+      "description": "Sent 10 messages to your teacher",
+      "icon": "🤝",
+      "category": "engagement",
+      "requirement": {
+        "type": "chat_messages",
+        "threshold": 10
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "halfway_there",
+      "title": "Halfway There",
+      "description": "Reached 50% case completion",
+      "icon": "🎯",
+      "category": "milestone",
+      "requirement": {
+        "type": "case_progress",
+        "threshold": 50
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "case_closed",
+      "title": "Case Closed",
+      "description": "Completed the full investigation",
+      "icon": "🎉",
+      "category": "milestone",
+      "requirement": {
+        "type": "case_progress",
+        "threshold": 100
+      },
+      "rarity": "legendary"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint_start",
+      "name": "Investigation Begins",
+      "description": "Board the Bullet Express and meet Conductor Whibury",
+      "progress": 0,
+      "rewards": {
+        "achievements": ["first_steps"],
+        "message": "Welcome aboard, detective! Your journey begins."
+      }
+    },
+    {
+      "id": "checkpoint_first_clue",
+      "name": "First Discovery",
+      "description": "Find your first piece of evidence",
+      "progress": 10,
+      "rewards": {
+        "achievements": ["keen_eye"],
+        "lensCharges": 1,
+        "message": "Excellent work! You've earned an Insight Lens charge."
+      }
+    },
+    {
+      "id": "checkpoint_suspects",
+      "name": "Meet the Suspects",
+      "description": "Interview all three suspects",
+      "progress": 30,
+      "rewards": {
+        "achievements": ["interrogator"],
+        "message": "You've gathered testimony from everyone. What secrets are they hiding?"
+      }
+    },
+    {
+      "id": "checkpoint_half",
+      "name": "Halfway Mark",
+      "description": "Reach 50% case completion",
+      "progress": 50,
+      "rewards": {
+        "achievements": ["halfway_there"],
+        "lensCharges": 2,
+        "message": "You're making excellent progress! The truth is within reach."
+      }
+    },
+    {
+      "id": "checkpoint_breakthrough",
+      "name": "Major Breakthrough",
+      "description": "Complete a challenging mini-game",
+      "progress": 70,
+      "rewards": {
+        "message": "This evidence changes everything!"
+      }
+    },
+    {
+      "id": "checkpoint_complete",
+      "name": "Case Solved",
+      "description": "Identify the killer and solve the mystery",
+      "progress": 100,
+      "rewards": {
+        "achievements": ["case_closed"],
+        "message": "Congratulations, detective! Justice has been served."
+      }
+    }
+  ]
+}

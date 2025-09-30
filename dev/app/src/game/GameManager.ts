@@ -5,6 +5,7 @@ import { MenuScene } from './scenes/MenuScene'
 import { CarriageScene } from './scenes/CarriageScene'
 import { MiniLetterScene } from './scenes/MiniLetterScene'
 import { MiniGapFillScene } from './scenes/MiniGapFillScene'
+import { MiniConfessionScene } from './scenes/MiniConfessionScene'
 import { AccuseScene } from './scenes/AccuseScene'
 import { DebriefScene } from './scenes/DebriefScene'
 import type { Room, GameState } from '../types/game'
@@ -68,6 +69,7 @@ export class GameManager {
       { key: 'Carriage', scene: CarriageScene },
       { key: 'MiniLetter', scene: MiniLetterScene },
       { key: 'MiniGapFill', scene: MiniGapFillScene },
+      { key: 'MiniConfession', scene: MiniConfessionScene },
       { key: 'Accuse', scene: AccuseScene },
       { key: 'Debrief', scene: DebriefScene },
     ]

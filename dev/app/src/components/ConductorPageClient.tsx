@@ -8,6 +8,9 @@ import { PhaserGame } from '@/components/PhaserGame'
 import { TeacherControls } from '@/components/TeacherControls'
 import { JournalPanel } from '@/components/JournalPanel'
 import { ChatPanel } from '@/components/ChatPanel'
+import TeacherAnalytics from '@/components/TeacherAnalytics'
+import DifficultyControls from '@/components/DifficultyControls'
+import { useGameStore } from '@/stores/gameStore'
 import caseData from '../data/case_01.json'
 
 export default function ConductorPageClient() {
@@ -20,6 +23,7 @@ export default function ConductorPageClient() {
   const [gameManager, setGameManager] = useState<any>(null)
   const [journalEntries, setJournalEntries] = useState<any[]>([])
   const [chatMessages, setChatMessages] = useState<any[]>([])
+  const analytics = useGameStore((state) => state.analytics)
 
   const loadJournalEntries = useCallback(async (roomId: string) => {
     if (!supabase) return
@@ -269,9 +273,9 @@ export default function ConductorPageClient() {
         </div>
 
         {/* Side Panels */}
-        <div className="w-96 bg-black/90 backdrop-blur-sm border-l border-steampunk-copper/30 flex flex-col">
+        <div className="w-96 bg-black/90 backdrop-blur-sm border-l border-steampunk-copper/30 flex flex-col overflow-hidden">
           {/* Room Info Header */}
-          <div className="p-4 border-b border-steampunk-copper/30">
+          <div className="p-4 border-b border-steampunk-copper/30 flex-shrink-0">
             <h2 className="text-xl font-bold text-steampunk-brass">Case Control Room</h2>
             <p className="text-sm text-gray-300">
               Room Code: <span className="font-mono text-steampunk-brass font-bold text-lg">{room.code}</span>
@@ -281,15 +285,25 @@ export default function ConductorPageClient() {
             </p>
           </div>
 
+          {/* Difficulty Controls */}
+          <div className="p-4 border-b border-steampunk-copper/30 flex-shrink-0">
+            <DifficultyControls />
+          </div>
+
+          {/* Analytics Panel */}
+          <div className="p-4 border-b border-steampunk-copper/30 overflow-y-auto flex-shrink-0" style={{ maxHeight: '35vh' }}>
+            <TeacherAnalytics analytics={analytics} studentName="Student" />
+          </div>
+
           {/* Journal Panel */}
-          <div className="flex-1 border-b border-steampunk-copper/30">
-            <JournalPanel 
+          <div className="flex-1 border-b border-steampunk-copper/30 overflow-hidden">
+            <JournalPanel
               entries={journalEntries}
             />
           </div>
 
           {/* Chat Panel */}
-          <div className="h-64">
+          <div className="h-48 flex-shrink-0">
             <ChatPanel 
               messages={chatMessages}
               roomId={room.id}

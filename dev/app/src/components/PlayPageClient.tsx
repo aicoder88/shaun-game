@@ -9,6 +9,7 @@ import { InventoryPanel } from '@/components/InventoryPanel'
 import { JournalPanel } from '@/components/JournalPanel'
 import { ChatPanel } from '@/components/ChatPanel'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import DialogueModal from '@/components/DialogueModal'
 import { useGameStore } from '@/stores/gameStore'
 
 export default function PlayPageClient() {
@@ -22,6 +23,8 @@ export default function PlayPageClient() {
   const [journalEntries, setJournalEntries] = useState<any[]>([])
   const [chatMessages, setChatMessages] = useState<any[]>([])
   const [inventory, setInventory] = useState<any[]>([])
+  const [activeDialogue, setActiveDialogue] = useState<any>(null)
+  const [grammarMistakes, setGrammarMistakes] = useState<any[]>([])
 
   // Memoized computed values to prevent unnecessary re-renders
   const gameState = useMemo(() => ({
@@ -144,6 +147,47 @@ export default function PlayPageClient() {
   }, [roomCode, joinRoom])
 
   // Subscribe to Zustand store updates
+  // Listen for dialogue events from Phaser
+  useEffect(() => {
+    if (!gameManager) return
+
+    const handleDialogueStart = (event: CustomEvent) => {
+      setActiveDialogue(event.detail)
+    }
+
+    window.addEventListener('dialogue-start' as any, handleDialogueStart)
+
+    return () => {
+      window.removeEventListener('dialogue-start' as any, handleDialogueStart)
+    }
+  }, [gameManager])
+
+  // Handle grammar mistakes for analytics
+  const handleGrammarMistake = useCallback((mistake: any) => {
+    setGrammarMistakes(prev => [...prev, mistake])
+
+    // Add to global store for analytics
+    const { addGrammarMistake, updateAnalytics } = useGameStore.getState()
+    addGrammarMistake({
+      id: `${Date.now()}-${Math.random()}`,
+      timestamp: mistake.timestamp,
+      suspect: mistake.suspect,
+      incorrectText: mistake.incorrectText,
+      correctForm: mistake.feedback.correctForm,
+      grammarRule: mistake.feedback.grammarRule,
+      error: mistake.feedback.error
+    })
+    updateAnalytics()
+
+    // Log to journal for teacher visibility
+    if (gameManager) {
+      gameManager.addJournalEntry(
+        'System',
+        `Grammar practice: ${mistake.incorrectText} → ${mistake.feedback.correctForm}`
+      )
+    }
+  }, [gameManager])
+
   useEffect(() => {
     const unsubscribe = useGameStore.subscribe(
       (newState: any, prevState: any) => {
@@ -206,12 +250,12 @@ export default function PlayPageClient() {
         <div className="flex h-screen">
           {/* Game Area */}
           <div className="flex-1 relative">
-            <PhaserGame 
-              roomId={room.id} 
+            <PhaserGame
+              roomId={room.id}
               isTeacher={false}
               onGameReady={setGameManager}
             />
-            
+
             {/* Student Interface Overlay */}
             <div className="absolute inset-0 pointer-events-none">
               <StudentInterface
@@ -220,6 +264,15 @@ export default function PlayPageClient() {
                 isLocked={gameState.isLocked}
               />
             </div>
+
+            {/* Dialogue Modal */}
+            {activeDialogue && (
+              <DialogueModal
+                suspect={activeDialogue}
+                onClose={() => setActiveDialogue(null)}
+                onGrammarMistake={handleGrammarMistake}
+              />
+            )}
           </div>
 
           {/* Side Panels */}
