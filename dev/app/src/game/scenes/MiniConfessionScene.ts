@@ -5,6 +5,7 @@ import type {
   ConfessionPatchworkData,
   ConfessionSegment
 } from '../../types/case'
+import { useGameStore } from '@/stores/gameStore'
 
 interface FragmentCard extends Phaser.GameObjects.Container {
   getData(key: 'fragment'): ConfessionFragment | undefined
@@ -91,7 +92,7 @@ export class MiniConfessionScene extends Phaser.Scene {
       this.scene.start('Carriage')
     })
 
-    this.input.on('drop', (_pointer, gameObject, dropZone) => {
+    this.input.on('drop', (_pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject, dropZone: Phaser.GameObjects.GameObject) => {
       this.handleDrop(gameObject as FragmentCard, dropZone as Phaser.GameObjects.Zone)
     })
 
@@ -295,6 +296,9 @@ export class MiniConfessionScene extends Phaser.Scene {
     this.sound.play('discovery', { volume: 0.8 })
     this.showFeedback('Confession complete! Share it with your team.', '#66ffb2')
 
+    this.recordCompletionAnalytics()
+    this.handleRewardClue()
+
     if (this.rewardClueId) {
       void this.gameManager?.addJournalEntry('Detective', `Assembled the confession: ${this.summaryText}`)
     }
@@ -302,6 +306,8 @@ export class MiniConfessionScene extends Phaser.Scene {
     const { width, height } = this.cameras.main
     const overlay = this.add.container(width / 2, height / 2)
     const bg = this.add.rectangle(0, 0, 680, 420, 0x000000, 0.92).setStrokeStyle(3, 0x5fffb7)
+    const halo = this.add.circle(0, -160, 200, 0x5fffb7, 0.12)
+      .setBlendMode(Phaser.BlendModes.ADD)
     const title = this.add.text(0, -160, 'CONFESSION PATCHED TOGETHER', {
       fontFamily: 'serif',
       fontSize: '26px',
@@ -325,7 +331,15 @@ export class MiniConfessionScene extends Phaser.Scene {
       }).setOrigin(0.5)
     }
 
-    const continueBtn = this.add.text(0, 170, 'Return to Investigation', {
+    const teacherPrompt = this.add.text(0, 150, 'Teacher prompt: Discuss how motive, action, and remorse connect the language to the crime.', {
+      fontFamily: 'serif',
+      fontSize: '16px',
+      color: '#66ffb2',
+      align: 'center',
+      wordWrap: { width: 520 }
+    }).setOrigin(0.5)
+
+    const continueBtn = this.add.text(0, 215, 'Return to Investigation', {
       fontFamily: 'serif',
       fontSize: '20px',
       color: '#ffffff',
@@ -337,7 +351,9 @@ export class MiniConfessionScene extends Phaser.Scene {
       this.scene.start('Carriage')
     })
 
-    const items: Phaser.GameObjects.GameObject[] = vocabBlock ? [bg, title, confession, vocabBlock, continueBtn] : [bg, title, confession, continueBtn]
+    const items: Phaser.GameObjects.GameObject[] = vocabBlock
+      ? [bg, halo, title, confession, vocabBlock, teacherPrompt, continueBtn]
+      : [bg, halo, title, confession, teacherPrompt, continueBtn]
     overlay.add(items)
     overlay.setAlpha(0)
 
@@ -346,5 +362,54 @@ export class MiniConfessionScene extends Phaser.Scene {
       alpha: 1,
       duration: 400
     })
+
+    this.tweens.add({
+      targets: halo,
+      alpha: { from: 0.12, to: 0.3 },
+      scale: { from: 1, to: 1.05 },
+      duration: 1200,
+      yoyo: true,
+      repeat: -1
+    })
+  }
+
+  private recordCompletionAnalytics() {
+    const store = useGameStore.getState()
+    store.trackMinigameCompleted('confession_patchwork', 100)
+    store.updateAnalytics()
+  }
+
+  private handleRewardClue() {
+    if (!this.rewardClueId) return
+
+    const store = useGameStore.getState()
+    const room = store.room
+    const clueId = this.rewardClueId
+
+    if (!room) {
+      store.trackClueDiscovered()
+      store.updateAnalytics()
+      return
+    }
+
+    const suspectsState = room.suspects || {}
+    const existingClues = Array.isArray(suspectsState.clues) ? suspectsState.clues : []
+
+    if (existingClues.includes(clueId)) {
+      return
+    }
+
+    const updatedClues = [...existingClues, clueId]
+    const updatedSuspects = {
+      ...suspectsState,
+      clues: updatedClues
+    }
+
+    useGameStore.setState((state) => ({
+      room: state.room ? { ...state.room, suspects: updatedSuspects } : state.room
+    }))
+
+    void store.updateRoom(room.id, { suspects: updatedSuspects })
+    store.trackClueDiscovered()
   }
 }

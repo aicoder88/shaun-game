@@ -35,11 +35,12 @@ export default function AchievementUnlock({
 
     // Auto-dismiss after 5 seconds
     const timer = setTimeout(() => {
-      handleDismiss()
+      setVisible(false)
+      setTimeout(onDismiss, 300)
     }, 5000)
 
     return () => clearTimeout(timer)
-  }, [])
+  }, [onDismiss])
 
   const handleDismiss = () => {
     setVisible(false)

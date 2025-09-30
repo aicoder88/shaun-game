@@ -169,7 +169,8 @@ function ConductorPageContent() {
       }
     } catch (error) {
       console.error('Error creating room:', error)
-      alert('Error creating room: ' + error.message)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+      alert('Error creating room: ' + errorMessage)
     } finally {
       setCreating(false)
     }
