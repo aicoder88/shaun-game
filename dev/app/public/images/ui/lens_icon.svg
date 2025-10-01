@@ -1,0 +1,19 @@
+<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Insight Lens icon -->
+  <defs>
+    <radialGradient id="lens">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#4682B4;stop-opacity:0.9" />
+    </radialGradient>
+  </defs>
+  <!-- Lens glass -->
+  <circle cx="25" cy="25" r="18" fill="url(#lens)" stroke="#4A4A4A" stroke-width="3"/>
+  <!-- Inner reflection -->
+  <circle cx="20" cy="20" r="8" fill="#FFFFFF" opacity="0.4"/>
+  <!-- Handle -->
+  <rect x="35" y="35" width="20" height="6" fill="#4A4A4A" rx="3" transform="rotate(45 40 40)"/>
+  <!-- Eye symbol inside lens -->
+  <ellipse cx="25" cy="25" rx="8" ry="10" fill="none" stroke="#2C3E50" stroke-width="1.5"/>
+  <circle cx="25" cy="25" r="4" fill="#2C3E50"/>
+  <circle cx="25" cy="24" r="2" fill="#FFFFFF"/>
+</svg>

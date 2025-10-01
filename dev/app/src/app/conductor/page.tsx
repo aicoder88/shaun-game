@@ -87,19 +87,69 @@ function ConductorPageContent() {
 
   const joinExistingRoom = async (code: string) => {
     try {
-      if (!supabase) throw new Error('Database not available')
+      // For local development without Supabase, create a mock room
+      if (!supabase) {
+        console.log('Creating local room for code:', code)
+        const killerId = randomChoice(['lestrange', 'gaspard', 'zane'])
+        const localRoom = {
+          id: `local-${code}`,
+          code,
+          scene: 'menu',
+          teacher_id: 'local-teacher',
+          killer_id: killerId,
+          lens_charges: 3,
+          inventory: { items: [] },
+          created_at: new Date().toISOString(),
+          locked: false
+        }
+        setRoom(localRoom)
+        setLoading(false)
+        return
+      }
+
       const { data, error } = await supabase
         .from('rooms')
         .select('*')
         .eq('code', code)
         .single()
 
-      if (error || !data) throw error || new Error('Room not found')
+      if (error || !data) {
+        console.warn('Room not found in database, creating local room')
+        const killerId = randomChoice(['lestrange', 'gaspard', 'zane'])
+        const localRoom = {
+          id: `local-${code}`,
+          code,
+          scene: 'menu',
+          teacher_id: 'local-teacher',
+          killer_id: killerId,
+          lens_charges: 3,
+          inventory: { items: [] },
+          created_at: new Date().toISOString(),
+          locked: false
+        }
+        setRoom(localRoom)
+        setLoading(false)
+        return
+      }
 
       setRoom(data)
       setLoading(false)
     } catch (error) {
       console.error('Error joining room:', error)
+      // Fallback to local room
+      const killerId = randomChoice(['lestrange', 'gaspard', 'zane'])
+      const localRoom = {
+        id: `local-${code}`,
+        code: code,
+        scene: 'menu',
+        teacher_id: 'local-teacher',
+        killer_id: killerId,
+        lens_charges: 3,
+        inventory: { items: [] },
+        created_at: new Date().toISOString(),
+        locked: false
+      }
+      setRoom(localRoom)
       setLoading(false)
     }
   }
@@ -177,25 +227,43 @@ function ConductorPageContent() {
   }
 
   const updateRoom = async (updates: any) => {
-    if (!room || !supabase) return
+    if (!room) return
 
-    try {
-      const { error } = await (supabase as any)
-        .from('rooms')
-        .update(updates)
-        .eq('id', room.id)
+    // Update local state immediately
+    setRoom({ ...room, ...updates })
 
-      if (error) {
-        console.error('Supabase error updating room:', error)
+    // Try to update in database if available
+    if (supabase) {
+      try {
+        const { error } = await (supabase as any)
+          .from('rooms')
+          .update(updates)
+          .eq('id', room.id)
+
+        if (error) {
+          console.warn('Database update failed (local mode):', error)
+        }
+      } catch (error) {
+        console.warn('Error updating room in database:', error)
       }
-    } catch (error) {
-      console.error('Error updating room:', error)
+    } else {
+      console.log('Local mode: Room updated', updates)
     }
   }
 
   const sendBroadcast = (message: string) => {
+    console.log('Broadcasting message:', message)
     if (gameManager && gameManager.sendChat) {
       gameManager.sendChat('Conductor Whibury', message)
+    } else {
+      // Local mode fallback
+      const newMessage = {
+        id: Date.now().toString(),
+        sender: 'Conductor Whibury',
+        message,
+        created_at: new Date().toISOString()
+      }
+      setChatMessages([...chatMessages, newMessage])
     }
   }
 

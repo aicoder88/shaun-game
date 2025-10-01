@@ -7,14 +7,32 @@ export class BootScene extends Phaser.Scene {
 
   preload() {
     console.log('BootScene: Starting preload...')
-    
-    // Create simple colored rectangles as placeholders for missing images
+
+    // Error handler
     this.load.on('loaderror', (file: any) => {
       console.warn('Failed to load:', file.src)
     })
 
-    // Skip loading missing assets - we'll create them programmatically
-    console.log('BootScene: Skipping asset loading (assets not available)')
+    // Load character sprites (SVG)
+    this.load.svg('lestrange', '/images/characters/lestrange.svg', { width: 200, height: 300 })
+    this.load.svg('gaspard', '/images/characters/gaspard.svg', { width: 200, height: 300 })
+    this.load.svg('zane', '/images/characters/zane.svg', { width: 200, height: 300 })
+
+    // Load evidence items (SVG)
+    this.load.svg('bloody_knife', '/images/items/knife.svg', { width: 100, height: 100 })
+    this.load.svg('torn_letter', '/images/items/letter.svg', { width: 100, height: 100 })
+    this.load.svg('ancient_book', '/images/items/book.svg', { width: 100, height: 100 })
+    this.load.svg('mechanical_piece', '/images/items/gear.svg', { width: 100, height: 100 })
+    this.load.svg('wine_glass', '/images/items/glass.svg', { width: 100, height: 100 })
+    this.load.svg('flight_log', '/images/items/logbook.svg', { width: 100, height: 100 })
+
+    // Load UI elements (SVG)
+    this.load.svg('lens_icon', '/images/ui/lens_icon.svg', { width: 60, height: 60 })
+
+    // Load logo (SVG)
+    this.load.svg('logo', '/images/logo.svg', { width: 400, height: 120 })
+
+    console.log('BootScene: Loading game assets...')
 
     // Loading bar
     const progressBar = this.add.graphics()
